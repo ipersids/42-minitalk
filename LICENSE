@@ -1,21 +1,43 @@
-MIT License
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    LICENSE                                            :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2024/09/05 23:17:41 by ipersids          #+#    #+#              #
+#    Updated: 2024/09/05 23:17:41 by ipersids         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
 
-Copyright (c) 2024 Julia Llama
+This software is free and released into the public domain for educational use 
+during core studies at Hive Helsinki <https://www.hive.fi>, a programming school 
+that's part of the 42 School Network <https://www.42network.org>.
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+By using, modifying, or distributing this code, you agree to the following terms:
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+1. Non-Commercial Use
+This software is intended for educational purposes and is not to be used for
+commercial purposes without explicit permission.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+2. Attribution
+Any use of this code must include proper attribution to Hive Helsinki and the 
+original creators. When redistributing this code or modified versions, you must 
+include this license to ensure these terms are clear to others.
+
+3. No Warranty
+The software is provided "as is," without any warranties or guarantees of any 
+kind, express or implied. The creators disclaim all liability for any claims,
+damages, or other liabilities that may arise from its use.
+
+4. Academic Integrity
+You may not claim this code as your own work. If using this code for educational 
+purposes, proper acknowledgment must be given to Hive Helsinki and the 42 Network.
+
+5. Modification
+You are free to copy, modify, publish, compile, or distribute this software
+—whether in source code or as a compiled binary—
+for personal or academic purposes.
+
+For more information about nature of this project, 
+please refer to <https://www.hive.fi>. 
