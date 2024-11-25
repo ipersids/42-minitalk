@@ -1,3 +1,0 @@
-[submodule "ft-printf"]
-	path = ft-printf
-	url = git@github.com:ipersids/42-ft-printf.git

@@ -1,0 +1,43 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    LICENSE                                            :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2024/09/05 23:17:41 by ipersids          #+#    #+#              #
+#    Updated: 2024/09/05 23:17:41 by ipersids         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
+This software is free and released into the public domain for educational use 
+during core studies at Hive Helsinki <https://www.hive.fi>, a programming school 
+that's part of the 42 School Network <https://www.42network.org>.
+
+By using, modifying, or distributing this code, you agree to the following terms:
+
+1. Non-Commercial Use
+This software is intended for educational purposes and is not to be used for
+commercial purposes without explicit permission.
+
+2. Attribution
+Any use of this code must include proper attribution to Hive Helsinki and the 
+original creators. When redistributing this code or modified versions, you must 
+include this license to ensure these terms are clear to others.
+
+3. No Warranty
+The software is provided "as is," without any warranties or guarantees of any 
+kind, express or implied. The creators disclaim all liability for any claims,
+damages, or other liabilities that may arise from its use.
+
+4. Academic Integrity
+You may not claim this code as your own work. If using this code for educational 
+purposes, proper acknowledgment must be given to Hive Helsinki and the 42 Network.
+
+5. Modification
+You are free to copy, modify, publish, compile, or distribute this software
+—whether in source code or as a compiled binary—
+for personal or academic purposes.
+
+For more information about nature of this project, 
+please refer to <https://www.hive.fi>. 
