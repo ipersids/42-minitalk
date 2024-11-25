@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/23 21:18:24 by ipersids          #+#    #+#             */
-/*   Updated: 2024/11/24 20:50:43 by ipersids         ###   ########.fr       */
+/*   Updated: 2024/11/25 23:08:30 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,10 @@ static void	sig_handler(int sig, siginfo_t *info, void *context);
 int	main(void)
 {
 	struct sigaction	sa;
-	sigset_t			set;
 
-	sigemptyset(&set);
-	sigaddset(&set, SIGUSR1);
-	sigaddset(&set, SIGUSR2);
+	sigemptyset(&sa.sa_mask);
+	sigaddset(&sa.sa_mask, SIGUSR1);
+	sigaddset(&sa.sa_mask, SIGUSR2);
 	sa.sa_flags = SA_SIGINFO;
 	sa.sa_sigaction = sig_handler;
 	sigaction(SIGUSR1, &sa, NULL);
@@ -41,11 +40,13 @@ int	main(void)
 
 static void	sig_handler(int sig, siginfo_t *info, void *context)
 {
-	static int				cnt_bit = 0;
-	static unsigned char	curr_char = 0;
+	static int				cnt_bit;
+	static unsigned char	curr_char;
+	static pid_t			curr_client;
 
 	(void)context;
-	// TODO: change to support UTF-8
+	if (info->si_pid != 0)
+		curr_client = info->si_pid;
 	if (sig == SIGUSR1)
 		curr_char |= (1 << (7 - cnt_bit));
 	else if (sig == SIGUSR2)
@@ -53,14 +54,17 @@ static void	sig_handler(int sig, siginfo_t *info, void *context)
 	cnt_bit++;
 	if (cnt_bit == 8)
 	{
+		cnt_bit = 0;
 		if (curr_char == '\0')
 		{
-			kill(info->si_pid, SIGUSR1);
-			ft_printf("\n----- end of message from %d -----\n", info->si_pid);
+			kill(curr_client, SIGUSR2);
+			ft_printf("\n----- end of message from %d -----\n", curr_client);
+			curr_char = 0;
+			return ;
 		}
 		else
 			ft_printf("%c", curr_char);
 		curr_char = 0;
-		cnt_bit = 0;
 	}
+	kill(curr_client, SIGUSR1);
 }
