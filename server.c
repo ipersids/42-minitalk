@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/23 21:18:24 by ipersids          #+#    #+#             */
-/*   Updated: 2024/11/25 23:08:30 by ipersids         ###   ########.fr       */
+/*   Updated: 2024/11/26 15:31:17 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,25 +17,37 @@
 /* ---------------------- Support function prototypes ---------------------- */
 
 static void	sig_handler(int sig, siginfo_t *info, void *context);
+static void	end_communication(pid_t client_pid);
 
 /* ---------------------------- Server Programme ---------------------------- */
 
-int	main(void)
+int	main(int argc, char **argv)
 {
 	struct sigaction	sa;
 
-	sigemptyset(&sa.sa_mask);
-	sigaddset(&sa.sa_mask, SIGUSR1);
-	sigaddset(&sa.sa_mask, SIGUSR2);
+	if (argc != 1 || !argv)
+		return (ft_printf("Usage: ./server\n"));
 	sa.sa_flags = SA_SIGINFO;
 	sa.sa_sigaction = sig_handler;
-	sigaction(SIGUSR1, &sa, NULL);
-	sigaction(SIGUSR2, &sa, NULL);
+	if (sigemptyset(&sa.sa_mask) == -1
+		|| sigaddset(&sa.sa_mask, SIGUSR1) == -1
+		|| sigaddset(&sa.sa_mask, SIGUSR2) == -1)
+	{
+		ft_printf("ERROR: Signal initialisation failed.\n");
+		return (1);
+	}
+	if (sigaction(SIGUSR1, &sa, NULL) == -1
+		|| sigaction(SIGUSR2, &sa, NULL) == -1)
+	{
+		ft_printf("ERROR: sigaction() system call failed.\n");
+		return (2);
+	}
 	ft_printf("SERVER PID: %d\n", getpid());
 	while (1)
 		pause();
 	return (0);
 }
+
 /* -------------------- Support function implementation -------------------- */
 
 static void	sig_handler(int sig, siginfo_t *info, void *context)
@@ -57,14 +69,18 @@ static void	sig_handler(int sig, siginfo_t *info, void *context)
 		cnt_bit = 0;
 		if (curr_char == '\0')
 		{
-			kill(curr_client, SIGUSR2);
-			ft_printf("\n----- end of message from %d -----\n", curr_client);
 			curr_char = 0;
-			return ;
+			return (end_communication(curr_client));
 		}
 		else
 			ft_printf("%c", curr_char);
 		curr_char = 0;
 	}
 	kill(curr_client, SIGUSR1);
+}
+
+static void	end_communication(pid_t client_pid)
+{
+	kill(client_pid, SIGUSR2);
+	ft_printf("\n----- end of message from %d -----\n", client_pid);
 }
