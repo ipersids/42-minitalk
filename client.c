@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/23 21:18:09 by ipersids          #+#    #+#             */
-/*   Updated: 2024/11/25 23:08:23 by ipersids         ###   ########.fr       */
+/*   Updated: 2024/11/26 15:08:17 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,44 +18,57 @@ static volatile int	g_is_received = 0;
 
 /* ---------------------- Support function prototypes ---------------------- */
 
-static int	is_pid_valid(const char *pid);
+static int	is_input_valid(int argc, const char *pid);
 static void	sent_message(int pid, const char *str);
-static void	handle_answer(int sig);
+static void	sig_handler(int sig, siginfo_t *info, void *context);
 
 /* --------------------------- Client Programme ---------------------------- */
 
 int	main(int argc, char **argv)
 {
-	int	pid;
+	int					pid;
+	struct sigaction	sa;
 
-	if (argc != 3)
+	pid = is_input_valid(argc, argv[1]);
+	sa.sa_flags = SA_SIGINFO;
+	sa.sa_sigaction = sig_handler;
+	if (sigemptyset(&sa.sa_mask) == -1
+		|| sigaddset(&sa.sa_mask, SIGUSR1) == -1
+		|| sigaddset(&sa.sa_mask, SIGUSR2) == -1)
 	{
-		ft_printf("ERROR: Less than 3 arguments.\n");
-		exit(EXIT_FAILURE);
+		ft_printf("ERROR: Signal initialisation failed.\n");
+		return (1);
 	}
-	pid = is_pid_valid(argv[1]);
-	signal(SIGUSR1, handle_answer);
-	signal(SIGUSR2, handle_answer);
+	if (sigaction(SIGUSR1, &sa, NULL) == -1
+		|| sigaction(SIGUSR2, &sa, NULL) == -1)
+	{
+		ft_printf("ERROR: sigaction() system call failed.\n");
+		return (2);
+	}
 	ft_printf("Sending a message from %d to server %d...\n", getpid(), pid);
 	sent_message(pid, argv[2]);
-	ft_printf("SUCCESS.\nBue!\n");
 	return (0);
 }
 
 /* -------------------- Support function implementation -------------------- */
 
-static int	is_pid_valid(const char *pid)
+static int	is_input_valid(int argc, const char *pid)
 {
 	int		res;
 	size_t	i;
 
+	if (argc != 3)
+	{
+		ft_printf("Usage: ./client PID \"message\".\n");
+		exit(3);
+	}
 	i = 0;
 	while (pid[i] != '\0')
 	{
 		if (!(pid[i] >= '0' && pid[i] <= '9'))
 		{
 			ft_printf("ERROR: PID should be an integer.\n");
-			exit(EXIT_FAILURE);
+			exit(4);
 		}
 		i++;
 	}
@@ -63,7 +76,7 @@ static int	is_pid_valid(const char *pid)
 	if (res <= 0 || kill(res, 0) != 0)
 	{
 		ft_printf("ERROR: Invalid PID. Please try again.\n");
-		exit(EXIT_FAILURE);
+		exit(5);
 	}
 	return (res);
 }
@@ -85,7 +98,7 @@ static void	sent_message(int pid, const char *str)
 				kill(pid, SIGUSR2);
 			i++;
 			while (g_is_received == 0)
-				usleep(100);//pause();
+				usleep(100);
 			g_is_received = 0;
 		}
 	}
@@ -97,10 +110,14 @@ static void	sent_message(int pid, const char *str)
 	}
 }
 
-static void	handle_answer(int sig)
+static void	sig_handler(int sig, siginfo_t *info, void *context)
 {
 	static size_t	bits;
+	static pid_t	server;
 
+	(void)context;
+	if (info->si_pid != 0)
+		server = info->si_pid;
 	if (sig == SIGUSR1)
 	{
 		bits++;
@@ -108,7 +125,7 @@ static void	handle_answer(int sig)
 	}
 	else if (sig == SIGUSR2)
 	{
-		ft_printf("Received %d bytes\n", bits / 8);
+		ft_printf("Server %d has received %d bytes.\n", server, bits / 8);
 		exit(EXIT_SUCCESS);
 	}
 }
