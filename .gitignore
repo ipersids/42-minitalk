@@ -55,3 +55,6 @@ dkms.conf
 
 # VS Code
 .vscode
+
+# Checkers
+valgrind-out.txt

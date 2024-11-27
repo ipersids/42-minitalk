@@ -6,7 +6,7 @@
 #    By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/23 21:45:59 by ipersids          #+#    #+#              #
-#    Updated: 2024/11/25 17:22:55 by ipersids         ###   ########.fr        #
+#    Updated: 2024/11/27 17:55:33 by ipersids         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,16 +15,24 @@ SERVER			:= server
 CLIENT			:= client
 
 # Compilation variables
-CC				:= gcc
-CFLAGS			:= -Wall -Wextra -Werror
+CC				:= clang
+CFLAGS			:= -Wall -Wextra -Werror #-g
+HDRS			:= -Iinclude -Ift-printf
+
+# Dir. names
+DIR_UTILS		:= src/minitalk-utils
 
 # File names
 SRC_CLIENT		:= client.c
 SRC_SERVER		:= server.c
+SRC_UTILS		:= $(DIR_UTILS)/sigaction_init.c $(DIR_UTILS)/kill_safe.c \
+				   $(DIR_UTILS)/ft_realloc.c
+
 OBJ_CLIENT		:= $(SRC_CLIENT:.c=.o)
 OBJ_SERVER		:= $(SRC_SERVER:.c=.o)
+OBJ_UTILS		:= $(SRC_UTILS:.c=.o)
 
-# Submodule-specific variables
+# ft_printf library
 LIB_DIR	:= ft-printf
 LIB	:= $(LIB_DIR)/libftprintf.a
 
@@ -32,16 +40,16 @@ LIB	:= $(LIB_DIR)/libftprintf.a
 all: $(LIB) $(SERVER) $(CLIENT)
 
 # Build the server executable
-$(SERVER): $(OBJ_SERVER) $(LIB)
-	$(CC) $(CFLAGS) $(OBJ_SERVER) $(LIB) -o $(SERVER)
+$(SERVER): $(OBJ_SERVER) $(OBJ_UTILS) $(LIB)
+	$(CC) $(CFLAGS) $(OBJ_SERVER) $(OBJ_UTILS) $(LIB) -o $(SERVER)
 
 # Build the client executable
-$(CLIENT): $(OBJ_CLIENT) $(LIB)
-	$(CC) $(CFLAGS) $(OBJ_CLIENT) $(LIB) -o $(CLIENT)
+$(CLIENT): $(OBJ_CLIENT) $(OBJ_UTILS) $(LIB)
+	$(CC) $(CFLAGS) $(OBJ_CLIENT) $(OBJ_UTILS) $(LIB) -o $(CLIENT)
 
 # Rule to compile source files
 %.o: %.c
-	@$(CC) $(CFLAGS) -I$(LIB_DIR) -c $< -o $@
+	@$(CC) $(CFLAGS) $(HDRS) -c $< -o $@
 
 # Build the submodule library
 $(LIB):
@@ -49,7 +57,7 @@ $(LIB):
 
 # Clean the main project
 clean:
-	rm -f $(OBJ_CLIENT) $(OBJ_SERVER)
+	rm -f $(OBJ_CLIENT) $(OBJ_SERVER) $(OBJ_UTILS)
 	$(MAKE) -C $(LIB_DIR) clean
 
 # Clean everything including the executable

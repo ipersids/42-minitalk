@@ -6,18 +6,19 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/23 21:18:24 by ipersids          #+#    #+#             */
-/*   Updated: 2024/11/26 15:31:17 by ipersids         ###   ########.fr       */
+/*   Updated: 2024/11/27 17:34:25 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <signal.h>
+#include "minitalk_utils.h"
 
-#include "ft_printf.h"
+static unsigned char	*g_res = NULL;
 
 /* ---------------------- Support function prototypes ---------------------- */
 
 static void	sig_handler(int sig, siginfo_t *info, void *context);
 static void	end_communication(pid_t client_pid);
+static void	add_char_to_message(unsigned char curr_char);
 
 /* ---------------------------- Server Programme ---------------------------- */
 
@@ -27,21 +28,7 @@ int	main(int argc, char **argv)
 
 	if (argc != 1 || !argv)
 		return (ft_printf("Usage: ./server\n"));
-	sa.sa_flags = SA_SIGINFO;
-	sa.sa_sigaction = sig_handler;
-	if (sigemptyset(&sa.sa_mask) == -1
-		|| sigaddset(&sa.sa_mask, SIGUSR1) == -1
-		|| sigaddset(&sa.sa_mask, SIGUSR2) == -1)
-	{
-		ft_printf("ERROR: Signal initialisation failed.\n");
-		return (1);
-	}
-	if (sigaction(SIGUSR1, &sa, NULL) == -1
-		|| sigaction(SIGUSR2, &sa, NULL) == -1)
-	{
-		ft_printf("ERROR: sigaction() system call failed.\n");
-		return (2);
-	}
+	m_sigaction_init(&sa, sig_handler);
 	ft_printf("SERVER PID: %d\n", getpid());
 	while (1)
 		pause();
@@ -73,14 +60,46 @@ static void	sig_handler(int sig, siginfo_t *info, void *context)
 			return (end_communication(curr_client));
 		}
 		else
-			ft_printf("%c", curr_char);
+			add_char_to_message(curr_char);
 		curr_char = 0;
 	}
-	kill(curr_client, SIGUSR1);
+	m_kill_safe(curr_client, SIGUSR1, g_res);
 }
 
 static void	end_communication(pid_t client_pid)
 {
-	kill(client_pid, SIGUSR2);
+	ft_printf("%s", g_res);
+	free(g_res);
+	g_res = NULL;
+	m_kill_safe(client_pid, SIGUSR2, g_res);
 	ft_printf("\n----- end of message from %d -----\n", client_pid);
+}
+
+static void	add_char_to_message(unsigned char curr_char)
+{
+	unsigned char	*tmp;
+	static size_t	capacity;
+	static size_t	len;
+
+	if (!g_res)
+	{
+		capacity = 100;
+		len = 0;
+		g_res = (unsigned char *)malloc((capacity + 1) * sizeof(char));
+		if (!g_res)
+			exit(7);
+	}
+	if (len >= capacity)
+	{
+		capacity = len * 2;
+		tmp = (unsigned char *)ft_realloc((void *)g_res, capacity);
+		if (!tmp)
+		{
+			free(g_res);
+			exit(8);
+		}
+		g_res = tmp;
+	}
+	g_res[len++] = curr_char;
+	g_res[len] = '\0';
 }
