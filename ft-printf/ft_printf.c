@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 23:33:28 by ipersids          #+#    #+#             */
-/*   Updated: 2024/11/15 18:16:38 by ipersids         ###   ########.fr       */
+/*   Updated: 2024/11/27 19:23:09 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ int	ft_printf(const char *format, ...)
 			format = print_content(&args, format + 1, &len);
 			continue ;
 		}
-		len += write(1, format, 1);
+		len += write_safe(1, format, 1);
 		format++;
 	}
 	va_end(args);

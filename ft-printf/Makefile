@@ -6,7 +6,7 @@
 #    By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/13 23:09:38 by ipersids          #+#    #+#              #
-#    Updated: 2024/11/25 17:24:09 by ipersids         ###   ########.fr        #
+#    Updated: 2024/11/27 19:35:31 by ipersids         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,7 +31,7 @@ endif
 NAME		:= libftprintf$(LIB_EXT)
 SRCS		:= ft_printf.c ft_puthex_fd.c ft_putptr_fd.c ft_putunmb_fd.c \
 			   ft_putstr_fd.c ft_putnbr_fd.c ft_putchar_fd.c ft_strchr.c \
-			   ft_strlen.c ft_atoi.c
+			   ft_strlen.c ft_atoi.c ft_write_safe.c
 OBJ			:= $(SRCS:%.c=%.o)
 
 # Targets

@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/11 19:02:08 by ipersids          #+#    #+#             */
-/*   Updated: 2024/11/25 17:25:36 by ipersids         ###   ########.fr       */
+/*   Updated: 2024/11/27 19:53:31 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,5 +30,6 @@ size_t	ft_putstr_fd(char *s, int fd);
 char	*ft_strchr(const char *str, int ch);
 size_t	ft_strlen(const char *s);
 int		ft_atoi(const char *str);
+ssize_t	write_safe(int fd, const void *buf, size_t count);
 
 #endif

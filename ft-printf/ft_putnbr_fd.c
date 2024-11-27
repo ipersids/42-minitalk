@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 19:21:53 by ipersids          #+#    #+#             */
-/*   Updated: 2024/11/18 11:50:55 by ipersids         ###   ########.fr       */
+/*   Updated: 2024/11/27 19:24:18 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,10 @@ size_t	ft_putnbr_fd(int n, int fd)
 	ch = '0';
 	if (n < 0)
 	{
-		len += write(fd, "-", 1);
+		len += write_safe(fd, "-", 1);
 		if (n == -2147483648)
 		{
-			len += write(fd, "2", 1);
+			len += write_safe(fd, "2", 1);
 			n = 147483648;
 		}
 		else
@@ -45,6 +45,6 @@ size_t	ft_putnbr_fd(int n, int fd)
 	if (n > 9)
 		len += ft_putnbr_fd(n / 10, fd);
 	ch = ch + (n % 10);
-	len += write(fd, &ch, 1);
+	len += write_safe(fd, &ch, 1);
 	return (len);
 }

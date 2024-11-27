@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 16:03:33 by ipersids          #+#    #+#             */
-/*   Updated: 2024/11/13 18:32:42 by ipersids         ###   ########.fr       */
+/*   Updated: 2024/11/27 19:24:43 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,6 @@ size_t	ft_putunbr_fd(unsigned int n, int fd)
 	if (n > 9)
 		len += ft_putunbr_fd(n / 10, fd);
 	ch = ch + (n % 10);
-	len += write(fd, &ch, 1);
+	len += write_safe(fd, &ch, 1);
 	return (len);
 }

@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 12:19:58 by ipersids          #+#    #+#             */
-/*   Updated: 2024/11/27 17:25:24 by ipersids         ###   ########.fr       */
+/*   Updated: 2024/11/27 19:11:38 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 
 void	m_sigaction_init(
 			struct sigaction *sa, void (*handler) (int, siginfo_t *, void *));
-void	m_kill_safe(pid_t pid, int sig, void *);
+void	m_kill_safe(pid_t pid, int sig, void *ptr);
 
 void	*ft_realloc(void *ptr, size_t new_size);
 
