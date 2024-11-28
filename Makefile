@@ -6,13 +6,13 @@
 #    By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/23 21:45:59 by ipersids          #+#    #+#              #
-#    Updated: 2024/11/27 17:55:33 by ipersids         ###   ########.fr        #
+#    Updated: 2024/11/28 12:11:41 by ipersids         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 # Programme variables
-SERVER			:= server
-CLIENT			:= client
+SERVER			:= ./server
+CLIENT			:= ./client
 
 # Compilation variables
 CC				:= clang
@@ -21,10 +21,11 @@ HDRS			:= -Iinclude -Ift-printf
 
 # Dir. names
 DIR_UTILS		:= src/minitalk-utils
+DIR_SRCS		:= src
 
 # File names
-SRC_CLIENT		:= client.c
-SRC_SERVER		:= server.c
+SRC_CLIENT		:= $(DIR_SRCS)/client.c
+SRC_SERVER		:= $(DIR_SRCS)/server.c
 SRC_UTILS		:= $(DIR_UTILS)/sigaction_init.c $(DIR_UTILS)/kill_safe.c \
 				   $(DIR_UTILS)/ft_realloc.c
 
