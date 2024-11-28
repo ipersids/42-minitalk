@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 19:20:36 by ipersids          #+#    #+#             */
-/*   Updated: 2024/11/27 19:24:37 by ipersids         ###   ########.fr       */
+/*   Updated: 2024/11/28 12:05:08 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,6 @@ size_t	ft_putstr_fd(char *s, int fd)
 {
 	size_t	len;
 
-	if (fd < 0)
-		return (0);
 	if (!s)
 		return (write_safe(fd, "(null)", 6));
 	len = ft_strlen(s);
